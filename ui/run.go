@@ -56,7 +56,10 @@ func Run(paths []string) {
 	}
 	gl.Enable(gl.TEXTURE_2D)
 
+	ca1 := NewKeyboardControllerAdapter(window)
+	ca2 := NewDummyControllerAdapter()
+
 	// run director
-	director := NewDirector(window, audio)
+	director := NewDirector(window, audio, ca1, ca2)
 	director.Start(paths)
 }

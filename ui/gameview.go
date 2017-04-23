@@ -3,9 +3,9 @@ package ui
 import (
 	"image"
 
-	"github.com/fogleman/nes/nes"
 	"github.com/go-gl/gl/v2.1/gl"
 	"github.com/go-gl/glfw/v3.1/glfw"
+	"github.com/paked/nes/nes"
 )
 
 const padding = 0
@@ -30,7 +30,7 @@ func (view *GameView) Enter() {
 	view.director.SetTitle(view.title)
 	view.console.SetAudioChannel(view.director.audio.channel)
 	view.console.SetAudioSampleRate(view.director.audio.sampleRate)
-	view.director.window.SetKeyCallback(view.onKey)
+	// view.director.window.SetKeyCallback(view.onKey)
 	// load state
 	if err := view.console.LoadState(savePath(view.hash)); err == nil {
 		return
@@ -47,7 +47,7 @@ func (view *GameView) Enter() {
 }
 
 func (view *GameView) Exit() {
-	view.director.window.SetKeyCallback(nil)
+	// view.director.window.SetKeyCallback(nil)
 	view.console.SetAudioChannel(nil)
 	view.console.SetAudioSampleRate(0)
 	// save sram
@@ -74,7 +74,7 @@ func (view *GameView) Update(t, dt float64) {
 	if readKey(window, glfw.KeyEscape) {
 		view.director.ShowMenu()
 	}
-	updateControllers(window, console)
+	updateControllers(window, console, view.director)
 	console.StepSeconds(dt)
 	gl.BindTexture(gl.TEXTURE_2D, view.texture)
 	setTexture(console.Buffer())
@@ -130,11 +130,16 @@ func drawBuffer(window *glfw.Window) {
 	gl.End()
 }
 
-func updateControllers(window *glfw.Window, console *nes.Console) {
-	turbo := console.PPU.Frame%6 < 3
-	k1 := readKeys(window, turbo)
-	j1 := readJoystick(glfw.Joystick1, turbo)
-	j2 := readJoystick(glfw.Joystick2, turbo)
-	console.SetButtons1(combineButtons(k1, j1))
-	console.SetButtons2(j2)
+func updateControllers(window *glfw.Window, console *nes.Console, director *Director) {
+	/*
+		turbo := console.PPU.Frame%6 < 3
+		k1 := readKeys(window, turbo)
+		j1 := readJoystick(glfw.Joystick1, turbo)
+		j2 := readJoystick(glfw.Joystick2, turbo)
+		console.SetButtons1(combineButtons(k1, j1))
+		console.SetButtons2(j2)
+	*/
+
+	console.SetButtons1(director.controllerAdapter1.Buttons())
+	console.SetButtons2(director.controllerAdapter2.Buttons())
 }
