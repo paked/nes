@@ -93,3 +93,7 @@ func (d *Director) PlayGame(path string) {
 func (d *Director) ShowMenu() {
 	d.SetView(d.menuView)
 }
+
+func (d *Director) Window() *glfw.Window {
+	return d.window
+}
