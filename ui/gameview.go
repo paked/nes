@@ -85,6 +85,10 @@ func (view *GameView) Update(t, dt float64) {
 	}
 }
 
+func (view *GameView) Console() *nes.Console {
+	return view.console
+}
+
 func (view *GameView) onKey(window *glfw.Window,
 	key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 	if action == glfw.Press {

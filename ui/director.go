@@ -12,6 +12,8 @@ type View interface {
 	Enter()
 	Exit()
 	Update(t, dt float64)
+
+	Console() *nes.Console
 }
 
 type Director struct {
@@ -96,4 +98,8 @@ func (d *Director) ShowMenu() {
 
 func (d *Director) Window() *glfw.Window {
 	return d.window
+}
+
+func (d *Director) Console() *nes.Console {
+	return d.view.Console()
 }

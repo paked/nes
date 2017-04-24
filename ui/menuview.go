@@ -168,6 +168,10 @@ func (view *MenuView) Update(t, dt float64) {
 	gl.PopMatrix()
 }
 
+func (view *MenuView) Console() *nes.Console {
+	return nil
+}
+
 func (view *MenuView) clampSelection() {
 	if view.i < 0 {
 		view.i = view.nx - 1
